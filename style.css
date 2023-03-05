@@ -1,3 +1,5 @@
+
+
 :not(.has-background) .section-background {
     position: fixed;
     top: -50%;
@@ -26,3 +28,11 @@
       90% { transform: translate(10%,5%) }
       100% { transform: translate(5%,0) }
   }
+
+ .headerlogo {
+    max-width:200px;
+ } 
+
+ .page-section .section-border {
+    background-color: #b5b5b5;
+ }
