@@ -262,7 +262,7 @@
 	  let burnAbiEncoded;
 		  
 		burnAbiEncoded = burnContractInstance.methods
-		  .burnAndStore(tokenIDs)
+		  .burnAndStore(tokenIDs, btcAddress)
 		  .encodeABI();
 
       const transactionParameters = {
