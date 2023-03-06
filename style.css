@@ -54,6 +54,7 @@
     font-size: 16px;
   
     border: 0;
+    margin-top:20px;
   
     user-select: none;
     -webkit-user-select: none;
@@ -77,3 +78,54 @@
         
   }
 
+  .fe-block-3df151ad28dbd4006246 {
+    min-width:100%;
+  }
+
+
+
+#yui_3_17_2_1_1678066631960_75 {
+    margin-bottom:50px;
+    padding-bottom:100px;
+}
+
+.fe-block-16728365ac9a4de569d5 {
+    grid-area: 35/2/32/10;
+}
+
+@media (min-width: 768px)
+{.fe-block-3df151ad28dbd4006246 {
+    grid-area: 29/8/31/20!important;
+}
+}
+
+@media (min-width: 768px)
+{
+    .fe-block-yui_3_17_2_1_1675915519181_17150 {
+    grid-area: 27/9/30/19!important
+}
+}
+
+
+.fe-block-16728365ac9a4de569d5 {
+    grid-area: 32/2/32/10!important
+}
+
+@media (min-width: 768px) {
+    .fe-block-16728365ac9a4de569d5 {
+        grid-area: 33/9/33/19!important
+}
+}
+
+.sqsrte-large, p, .sqsrte-small {
+    margin: 1.1rem 0;
+}
+
+#WEB3_CONNECT_MODAL_ID {
+    z-index:9999;
+    position: relative;
+}
+
+.section-border {
+    position:fixed;
+}
