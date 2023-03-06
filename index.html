@@ -213,14 +213,14 @@
     //BURN
 	async function burn() {
 	  
-	  tokenIDs = document.querySelector("#edit-tokenIDforbitring").value.replace(/\s+/g, '');
+	  tokenID = document.querySelector("#edit-tokenIDforbitring").value.replace(/\s+/g, '');
 	  	  
-	  if (tokenIDs.length == 0) {
-	  document.querySelector("#status").innerHTML = "Missing tokenIDs from user. Please retry.";
+	  if (tokenID.length == 0) {
+	  document.querySelector("#status").innerHTML = "Missing tokenID from user. Please retry.";
 	  	return;
 	  };
 	
-	  tokenIDs = tokenIDs.split(',');
+	  tokenIDs = tokenID.split(',');
     if (tokenIDs.length > 1) {
       document.querySelector("#status").innerHTML = "Please only input one tokenID at a time";
 	  	return;
@@ -262,7 +262,7 @@
 	  let burnAbiEncoded;
 		  
 		burnAbiEncoded = burnContractInstance.methods
-		  .burnAndStore(tokenIDs, btcAddress)
+		  .burnAndStore(tokenID, btcAddress)
 		  .encodeABI();
 
       const transactionParameters = {
