@@ -9,7 +9,7 @@ $('#hero-slider').slick({
     cssEase: 'linear'
 });
 
-$(document).ready(function () {
+$('document').ready(function () {
     const marquee = $('#marquee');
     let i = 0;
     setInterval(() => {
@@ -20,5 +20,12 @@ $(document).ready(function () {
             slide.clone().appendTo(marquee);
         }
     }, 2000);
+
+    $('.header-mobile .btn-menu').click(function () {
+        $('.mobile-menu-container').toggleClass('active');
+    });
+    $('.mobile-menu-container .btn-menu,.mobile-menu-container .btn-voltar').click(function () {
+        $('.mobile-menu-container').toggleClass('active');
+    });
 });
 

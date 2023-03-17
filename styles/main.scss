@@ -9,6 +9,46 @@
     will-change: transform;
     transition: 2s transform linear;
 }
+
+#burn-form {
+    > div {
+        margin-top: 30px;
+    }
+    #status {
+        font-size: 1.2vw;
+        line-height: 1.5;
+        @media (max-width: 767px) {
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    }
+}
+.button-primary {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url("/images/burn.svg") no-repeat;
+    filter: grayscale(0.4);
+    background-size: 100% auto;
+    background-position: center;
+    border: 2px solid #fff;
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 2vw;
+    font-size: 2vw;
+    margin: 2vw 0;
+    &:hover {
+        filter: grayscale(0);
+    }
+    @media (max-width: 767px) {
+        padding: 20px;
+        font-size: 16px;
+    }
+}
+.ft-logo-desktop,
+.ft-logo-desktop-mobile {
+    border-radius: 100%;
+    overflow: hidden;
+    border: 4px solid #fff;
+}
 #wpstats {
     display: none;
 }
@@ -256,7 +296,7 @@ input[type="text"],
 input[type="email"] {
     background: #f7f7f7;
     background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
-    border: 1px solid #d1d1d1;
+
     border-radius: 2px;
     color: #686868;
     padding: 0.625em 0.4375em;
@@ -457,6 +497,8 @@ p {
 
 section {
     margin-bottom: 20px !important;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 ul,
@@ -472,31 +514,24 @@ a {
     color: #f0f0f0 !important;
 }
 
-a:hover {
-    color: #f0f0f0;
-    text-decoration: none;
-    font-family: "Druk-Italic", sans-serif !important;
-    padding-right: 20px;
-}
-
 ::selection {
     background: #ccc;
     color: #f0f0f0;
 }
 
 input[type="text"],
-input[type="email"],
-::placeholder {
+input[type="email"] {
     outline: none;
     appearance: none;
     -webkit-appearance: none;
     background: transparent !important;
-    padding: 0;
+    padding: 10px 10px 10px 0;
     font-family: "Druk-Bold", sans-serif;
-    font-size: 5.3vw;
+    font-size: 2.6vw;
     line-height: normal;
     color: #f0f0f0 !important;
     border: none;
+    border-bottom: 2px solid #f0f0f0 !important;
 }
 
 input[type="submit"]:focus {
@@ -556,7 +591,7 @@ input[type="submit"]:focus {
 
 .druk-bold-01 {
     font-family: "Druk-Bold", sans-serif;
-    font-size: 9.53vw;
+    font-size: 9vw;
     line-height: 11.91vw;
 }
 
@@ -571,11 +606,6 @@ input[type="submit"]:focus {
     font-family: "Druk-Bold", sans-serif;
     font-size: 5.14vw;
     line-height: 5.86vw;
-}
-
-.druk-bold-02 a:hover,
-a.druk-bold-03:hover {
-    font-family: "Druk-BoldItalic" !important;
 }
 
 .uppercase {
@@ -624,16 +654,12 @@ header .menu {
     justify-content: space-between;
     width: 33.7vw;
     padding: 15px 0 0 20px;
-}
-
-header .menu li:nth-child(2) {
-    position: absolute;
-    left: 15.5vw;
-}
-
-header .menu li:nth-child(3) {
-    position: absolute;
-    left: 30vw;
+    li {
+        margin-right: 3vw;
+        a {
+            white-space: nowrap;
+        }
+    }
 }
 
 header .menu a {
@@ -817,13 +843,14 @@ section > div {
 }
 
 .music-email {
-    height: 10px;
+    // height: 10px;
 }
 
 .music-right {
     display: flex;
     justify-content: space-between;
     gap: 30px;
+    align-items: center;
 }
 
 .btn-find-more:hover {
@@ -845,6 +872,29 @@ section > div {
 
 .network-section {
     padding-bottom: 50px;
+    .section-header {
+        @media (max-width: 767px) {
+            display: flex;
+            flex-direction: column;
+            .home-section-title {
+                text-align: left;
+                p {
+                    position: static !important;
+                    font-size: 18px ;
+                    margin-bottom: 40px;
+                }
+            }
+            .home-section-subtitle {
+                text-align: left;
+                p {
+                    position: static !important;
+                    font-size: 16px ;
+                    width: 100%;
+                    margin-bottom: 40px;
+                }
+            }
+        }
+    }
 }
 
 .network-section .section-content {
@@ -856,7 +906,11 @@ section > div {
 }
 
 .slider-journal-section {
+    padding-top: 50px;
     padding-bottom: 50px;
+    .burn-img {
+        margin-top: 40px;
+    }
 }
 
 .slider-journal .slide-content {
@@ -871,7 +925,9 @@ section > div {
 }
 
 .slide-right {
-    margin-top: 5px;
+    > div {
+        padding: 100px 30px;
+    }
 }
 
 .slide-right p:last-child {
@@ -924,14 +980,17 @@ section > div {
 }
 
 .footer {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-column-gap: 20px;
+    display: flex;
     position: relative;
     overflow-y: hidden;
-    padding: 5px 20px;
+    padding: 20px 200px 20px 20px;
     margin-top: 50px;
     border-top: solid 1px #f0f0f0;
+    justify-content: space-between;
+    @media (max-width: 767px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 .footer .druk-bold-03 {
@@ -942,17 +1001,36 @@ section > div {
 
 .ft-contact,
 .ft-social {
-    grid-column: span 3;
+    // grid-column: span 3;
 }
 
-.ft-contact p {
-    margin: 2.3vw 0 0;
+.ft-contact {
+    p {
+        margin: 2.3vw 0 0;
+    }
+    a {
+        font-size: 5vw;
+        font-family: "Druk-Bold", sans-serif;
+        @media (max-width: 767px) {
+            font-size: 23px;
+        }
+    }
 }
 
 .ft-social {
     margin-top: 1vw;
     text-align: right;
-    grid-column: span 2;
+    // grid-column: span 2;
+    @media (max-width: 767px) {
+        padding-top: 10px;
+    }
+    svg {
+        width: 2vw;
+        height: auto;
+        @media (max-width: 767px) {
+            width: 40px;
+        }
+    }
 }
 
 .ft-social a {
@@ -966,14 +1044,6 @@ section > div {
     padding-right: 0;
 }
 
-.ico-facebook {
-    width: 1.1vw;
-}
-
-.ico-instagram {
-    width: 2.15vw;
-}
-
 .ft-logo {
     position: absolute;
     right: 20px;
@@ -981,6 +1051,10 @@ section > div {
     background: #1b1515;
     border-radius: 50%;
     width: 7.03vw;
+    @media (max-width: 767px) {
+        width: 70px !important;
+        height: 70px !important;
+    }
 }
 
 .mc4wp-form-fields input[type="submit"] {
@@ -1000,9 +1074,6 @@ section > div {
 .credits {
     border-top: solid 1px #f0f0f0;
     padding: 11px 20px;
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    grid-column-gap: 20px;
 }
 
 .credits span {
@@ -1021,23 +1092,9 @@ section > div {
 }
 
 @media only screen and (max-width: 1280px) {
-    header .menu li:nth-child(3) {
-        position: absolute;
-        left: 31vw;
-    }
 }
 
 @media only screen and (max-width: 1024px) {
-    header .menu li:nth-child(2) {
-        position: absolute;
-        left: 16.5vw;
-    }
-
-    header .menu li:nth-child(3) {
-        position: absolute;
-        left: 32vw;
-    }
-
     a.music-email.druk-bold-03,
     a.btn-find-more.druk-bold-03 {
         font-size: 4.7vw;
@@ -1125,15 +1182,29 @@ section > div {
         background: #1b1515;
         height: 100vh;
         top: -110vh;
-        padding: 10px;
+        padding: 50px;
         transition: 0.5s;
+        box-sizing: border-box;
+        ul {
+            display: flex;
+            flex-direction: column;
+            li {
+                width: 100%;
+            }
+            a {
+                white-space: nowrap;
+            }
+        }
+        &.active {
+            top: 0;
+        }
     }
 
     .mobile-menu-container .btn-voltar {
-        width: 47px;
-        height: 47px;
-        right: 10px;
-        top: 10px;
+        width: 40px;
+        height: 40px;
+        right: 30px;
+        top: 30px;
     }
 
     .mobile-menu-container .logo {
@@ -1151,7 +1222,7 @@ section > div {
     }
 
     .mobile-menu {
-        column-count: 2;
+        // column-count: 2;
     }
 
     .mobile-menu * {
@@ -1233,14 +1304,14 @@ section > div {
         margin-bottom: 10px !important;
     }
 
-    .music-container {
-        display: block;
-        width: 110vw;
-        border-bottom: none;
-    }
+    // .music-container {
+    //     display: block;
+    //     width: 110vw;
+    //     border-bottom: none;
+    // }
 
     .music-right {
-        display: none;
+        // display: none;
     }
 
     .music-email {
@@ -1327,7 +1398,7 @@ section > div {
     }
 
     .footer {
-        display: block;
+        // display: block;
         margin: 30px 0 0;
         padding: 10px;
     }
@@ -1335,7 +1406,7 @@ section > div {
     .ft-logo {
         right: 10px;
         margin-top: -100px;
-        width: 78px;
+        // width: 78px;
     }
 
     .ft-contact {
@@ -1344,7 +1415,6 @@ section > div {
 
     .ft-contact p,
     .ft-contact a {
-        font-size: 8px;
     }
 
     .ft-contact a {
@@ -1352,18 +1422,10 @@ section > div {
         margin-top: -5px;
     }
 
-    .ico-facebook {
-        width: 10px;
-    }
-
-    .ico-instagram {
-        width: 21px;
-    }
-
     .ft-social {
-        position: absolute;
-        left: 216px;
-        bottom: 13px;
+        // position: absolute;
+        // left: 216px;
+        // bottom: 13px;
     }
 
     .ft-social a {
@@ -1398,12 +1460,12 @@ section > div {
     }
 
     .page-template-page-homepage .ft-logo {
-        width: 78px;
-        height: 87px;
+        // width: 78px;
+        // height: 87px;
     }
 
     .page-template-page-homepage .ft-logo-desktop-mobile {
-        height: 100%;
+        // height: 100%;
     }
 }
 
@@ -1411,6 +1473,7 @@ section > div {
 body {
     background: #1b1515;
     overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 .site {
@@ -1446,7 +1509,7 @@ body:not(.custom-background-image):after {
 }
 
 p {
-    margin: 0 0 30px;
+    margin: 0 0 15px;
 }
 
 section {
@@ -1464,33 +1527,12 @@ a {
     box-shadow: none !important;
     cursor: pointer;
     color: #f0f0f0 !important;
-}
-
-a:hover {
-    color: #f0f0f0;
-    text-decoration: none;
-    font-family: "Druk-Italic", sans-serif !important;
-    padding-right: 20px;
+    box-sizing: border-box;
 }
 
 ::selection {
     background: #ccc;
     color: #f0f0f0;
-}
-
-input[type="text"],
-input[type="email"],
-::placeholder {
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    background: transparent !important;
-    padding: 0;
-    font-family: "Druk-Bold", sans-serif;
-    font-size: 5.3vw;
-    line-height: normal;
-    color: #f0f0f0 !important;
-    border: none;
 }
 
 input[type="submit"]:focus {
@@ -1550,7 +1592,7 @@ input[type="submit"]:focus {
 
 .druk-bold-01 {
     font-family: "Druk-Bold", sans-serif;
-    font-size: 9.53vw;
+    font-size: 9vw;
     line-height: 11.91vw;
 }
 
@@ -1565,11 +1607,6 @@ input[type="submit"]:focus {
     font-family: "Druk-Bold", sans-serif;
     font-size: 5.14vw;
     line-height: 5.86vw;
-}
-
-.druk-bold-02 a:hover,
-a.druk-bold-03:hover {
-    font-family: "Druk-BoldItalic" !important;
 }
 
 .uppercase {
@@ -1618,16 +1655,6 @@ header .menu {
     justify-content: space-between;
     width: 33.7vw;
     padding: 15px 0 0 20px;
-}
-
-header .menu li:nth-child(2) {
-    position: absolute;
-    left: 15.5vw;
-}
-
-header .menu li:nth-child(3) {
-    position: absolute;
-    left: 30vw;
 }
 
 header .menu a {
@@ -1799,7 +1826,7 @@ section > div {
 }
 
 .music-email {
-    height: 10px;
+    // height: 10px;
 }
 
 .music-right {
@@ -1906,26 +1933,10 @@ section > div {
     width: 100%;
 }
 
-.footer {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-column-gap: 20px;
-    position: relative;
-    overflow-y: hidden;
-    padding: 5px 20px;
-    margin-top: 50px;
-    border-top: solid 1px #f0f0f0;
-}
-
 .footer .druk-bold-03 {
     grid-column: span 6;
     font-size: 5.4vw;
     position: relative;
-}
-
-.ft-contact,
-.ft-social {
-    grid-column: span 3;
 }
 
 .ft-contact p {
@@ -1947,14 +1958,6 @@ section > div {
 .ft-social a:hover {
     opacity: 0.8;
     padding-right: 0;
-}
-
-.ico-facebook {
-    width: 1.1vw;
-}
-
-.ico-instagram {
-    width: 2.15vw;
 }
 
 .ft-logo {
@@ -1980,14 +1983,6 @@ section > div {
     opacity: 0;
 }
 
-.credits {
-    border-top: solid 1px #f0f0f0;
-    padding: 11px 20px;
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    grid-column-gap: 20px;
-}
-
 .credits span {
     grid-column: span 4;
 }
@@ -2004,23 +1999,9 @@ section > div {
 }
 
 @media only screen and (max-width: 1280px) {
-    header .menu li:nth-child(3) {
-        position: absolute;
-        left: 31vw;
-    }
 }
 
 @media only screen and (max-width: 1024px) {
-    header .menu li:nth-child(2) {
-        position: absolute;
-        left: 16.5vw;
-    }
-
-    header .menu li:nth-child(3) {
-        position: absolute;
-        left: 32vw;
-    }
-
     a.music-email.druk-bold-03,
     a.btn-find-more.druk-bold-03 {
         font-size: 4.7vw;
@@ -2057,11 +2038,6 @@ section > div {
     .slider-casting .druk-wide-03 a {
         font-size: 18px;
         line-height: 26px;
-    }
-
-    .druk-bold-01 {
-        font-size: 63px;
-        line-height: 72px;
     }
 
     .druk-bold-02,
@@ -2101,23 +2077,12 @@ section > div {
         margin: 10px;
     }
 
-    .mobile-menu-container {
-        position: fixed;
-        width: 100%;
-        z-index: 50;
-        background: #1b1515;
-        height: 100vh;
-        top: -110vh;
-        padding: 10px;
-        transition: 0.5s;
-    }
-
-    .mobile-menu-container .btn-voltar {
-        width: 47px;
-        height: 47px;
-        right: 10px;
-        top: 10px;
-    }
+    // .mobile-menu-container .btn-voltar {
+    //     width: 47px;
+    //     height: 47px;
+    //     right: 10px;
+    //     top: 10px;
+    // }
 
     .mobile-menu-container .logo {
         margin-top: 40px;
@@ -2134,7 +2099,7 @@ section > div {
     }
 
     .mobile-menu {
-        column-count: 2;
+        // column-count: 2;
     }
 
     .mobile-menu * {
@@ -2216,14 +2181,14 @@ section > div {
         margin-bottom: 10px !important;
     }
 
-    .music-container {
-        display: block;
-        width: 110vw;
-        border-bottom: none;
-    }
+    // .music-container {
+    //     display: block;
+    //     width: 110vw;
+    //     border-bottom: none;
+    // }
 
     .music-right {
-        display: none;
+        // display: none;
     }
 
     .music-email {
@@ -2310,7 +2275,7 @@ section > div {
     }
 
     .footer {
-        display: block;
+        // display: block;
         margin: 30px 0 0;
         padding: 10px;
     }
@@ -2318,7 +2283,7 @@ section > div {
     .ft-logo {
         right: 10px;
         margin-top: -100px;
-        width: 78px;
+        // width: 78px;
     }
 
     .ft-contact {
@@ -2327,7 +2292,6 @@ section > div {
 
     .ft-contact p,
     .ft-contact a {
-        font-size: 8px;
     }
 
     .ft-contact a {
@@ -2335,18 +2299,10 @@ section > div {
         margin-top: -5px;
     }
 
-    .ico-facebook {
-        width: 10px;
-    }
-
-    .ico-instagram {
-        width: 21px;
-    }
-
     .ft-social {
-        position: absolute;
-        left: 216px;
-        bottom: 13px;
+        // position: absolute;
+        // left: 216px;
+        // bottom: 13px;
     }
 
     .ft-social a {
@@ -2381,12 +2337,12 @@ section > div {
     }
 
     .page-template-page-homepage .ft-logo {
-        width: 78px;
-        height: 87px;
+        // width: 78px;
+        // height: 87px;
     }
 
     .page-template-page-homepage .ft-logo-desktop-mobile {
-        height: 100%;
+        // height: 100%;
     }
 }
 
@@ -2411,8 +2367,6 @@ input[type="submit"] {
 
 input[type="text"],
 input[type="email"] {
-    border-color: #f9f9f9;
-    border-color: rgba(249, 249, 249, 0.2);
 }
 
 /*! CSS Used from: http://squad.agency/wp-content/plugins/jetpack/css/jetpack.css?ver=11.3.2 ; media=all */
@@ -2856,80 +2810,80 @@ body.custom-background {
 
 @font-face {
     font-family: "Druk-WideMedium";
-    src: url("/fonts/Druk-WideMedium.eot?#iefix") format("embedded-opentype"),
-        url("/fonts/Druk-WideMedium.otf") format("opentype"), url("/fonts/Druk-WideMedium.woff") format("woff"),
-        url("/fonts/Druk-WideMedium.ttf") format("truetype"),
-        url("/fonts/Druk-WideMedium.svg#Druk-WideMedium") format("svg");
+    src: url("../fonts/Druk-WideMedium.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-WideMedium.otf") format("opentype"), url("../fonts/Druk-WideMedium.woff") format("woff"),
+        url("../fonts/Druk-WideMedium.ttf") format("truetype"),
+        url("../fonts/Druk-WideMedium.svg#Druk-WideMedium") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-WideMedium";
-    src: url("/fonts/Druk-WideMedium.eot?#iefix") format("embedded-opentype"),
-        url("/fonts/Druk-WideMedium.otf") format("opentype"), url("/fonts/Druk-WideMedium.woff") format("woff"),
-        url("/fonts/Druk-WideMedium.ttf") format("truetype"),
-        url("/fonts/Druk-WideMedium.svg#Druk-WideMedium") format("svg");
+    src: url("../fonts/Druk-WideMedium.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-WideMedium.otf") format("opentype"), url("../fonts/Druk-WideMedium.woff") format("woff"),
+        url("../fonts/Druk-WideMedium.ttf") format("truetype"),
+        url("../fonts/Druk-WideMedium.svg#Druk-WideMedium") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-Italic";
-    src: url("/fonts/Druk-WideMediumItalic.eot?#iefix") format("embedded-opentype"),
-        url("/fonts/Druk-WideMediumItalic.otf") format("opentype"),
-        url("/fonts/Druk-WideMediumItalic.woff") format("woff"),
-        url("/fonts/Druk-WideMediumItalic.ttf") format("truetype"),
-        url("/fonts/Druk-WideMediumItalic.svg#Druk-WideMediumItalic") format("svg");
+    src: url("../fonts/Druk-WideMediumItalic.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-WideMediumItalic.otf") format("opentype"),
+        url("../fonts/Druk-WideMediumItalic.woff") format("woff"),
+        url("../fonts/Druk-WideMediumItalic.ttf") format("truetype"),
+        url("../fonts/Druk-WideMediumItalic.svg#Druk-WideMediumItalic") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-Italic";
-    src: url("/fonts/Druk-WideMediumItalic.eot?#iefix") format("embedded-opentype"),
-        url("/fonts/Druk-WideMediumItalic.otf") format("opentype"),
-        url("/fonts/Druk-WideMediumItalic.woff") format("woff"),
-        url("/fonts/Druk-WideMediumItalic.ttf") format("truetype"),
-        url("/fonts/Druk-WideMediumItalic.svg#Druk-WideMediumItalic") format("svg");
+    src: url("../fonts/Druk-WideMediumItalic.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-WideMediumItalic.otf") format("opentype"),
+        url("../fonts/Druk-WideMediumItalic.woff") format("woff"),
+        url("../fonts/Druk-WideMediumItalic.ttf") format("truetype"),
+        url("../fonts/Druk-WideMediumItalic.svg#Druk-WideMediumItalic") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-Bold";
-    src: url("/fonts/Druk-Bold.eot?#iefix") format("embedded-opentype"), url("/fonts/Druk-Bold.otf") format("opentype"),
-        url("/fonts/Druk-Bold.woff") format("woff"), url("/fonts/Druk-Bold.ttf") format("truetype"),
-        url("/fonts/Druk-Bold.svg#Druk-Bold") format("svg");
+    src: url("../fonts/Druk-Bold.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-Bold.otf") format("opentype"), url("../fonts/Druk-Bold.woff") format("woff"),
+        url("../fonts/Druk-Bold.ttf") format("truetype"), url("../fonts/Druk-Bold.svg#Druk-Bold") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-Bold";
-    src: url("/fonts/Druk-Bold.eot?#iefix") format("embedded-opentype"), url("/fonts/Druk-Bold.otf") format("opentype"),
-        url("/fonts/Druk-Bold.woff") format("woff"), url("/fonts/Druk-Bold.ttf") format("truetype"),
-        url("/fonts/Druk-Bold.svg#Druk-Bold") format("svg");
+    src: url("../fonts/Druk-Bold.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-Bold.otf") format("opentype"), url("../fonts/Druk-Bold.woff") format("woff"),
+        url("../fonts/Druk-Bold.ttf") format("truetype"), url("../fonts/Druk-Bold.svg#Druk-Bold") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-BoldItalic";
-    src: url("/fonts/Druk-BoldItalic.eot?#iefix") format("embedded-opentype"),
-        url("/fonts/Druk-BoldItalic.otf") format("opentype"), url("/fonts/Druk-BoldItalic.woff") format("woff"),
-        url("/fonts/Druk-BoldItalic.ttf") format("truetype"),
-        url("/fonts/Druk-BoldItalic.svg#Druk-BoldItalic") format("svg");
+    src: url("../fonts/Druk-BoldItalic.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-BoldItalic.otf") format("opentype"), url("../fonts/Druk-BoldItalic.woff") format("woff"),
+        url("../fonts/Druk-BoldItalic.ttf") format("truetype"),
+        url("../fonts/Druk-BoldItalic.svg#Druk-BoldItalic") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Druk-BoldItalic";
-    src: url("/fonts/Druk-BoldItalic.eot?#iefix") format("embedded-opentype"),
-        url("/fonts/Druk-BoldItalic.otf") format("opentype"), url("/fonts/Druk-BoldItalic.woff") format("woff"),
-        url("/fonts/Druk-BoldItalic.ttf") format("truetype"),
-        url("/fonts/Druk-BoldItalic.svg#Druk-BoldItalic") format("svg");
+    src: url("../fonts/Druk-BoldItalic.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Druk-BoldItalic.otf") format("opentype"), url("../fonts/Druk-BoldItalic.woff") format("woff"),
+        url("../fonts/Druk-BoldItalic.ttf") format("truetype"),
+        url("../fonts/Druk-BoldItalic.svg#Druk-BoldItalic") format("svg");
     font-weight: normal;
     font-style: normal;
 }

@@ -1,0 +1,51 @@
+<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="background-color:#101010">
+  <style>
+    @keyframes glitch {
+      0% { transform:translate(-3.5px,-4.5px); opacity:.15 }
+      7% { transform:translate(-3.5px,-4.5px); opacity:.65 }
+      45% { transform:translate(-3.5px,-4.5px); opacity:.35 }
+      50% { transform:translate(-3.5px,-4.5px); opacity:.85 }
+      to { transform:translate(-3.5px,-4.5px); opacity:.25 }
+    }
+    @keyframes fire {
+      0% { fill:#FF3; }
+      20% { fill:#F60; }
+      40% { fill:#F03; }
+      60% { fill:#C30; }
+      80% { fill:#930; }
+      100% { fill:#630; }
+    }
+  </style>
+  <defs>
+    <filter id="background" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="linearRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="10" numOctaves="4" seed="1" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence">
+        <animate attributeName="seed" dur="1s" repeatCount="indefinite" calcMode="discrete" values="1;2;3;4;5;6;7;8;9;10"></animate>
+      </feTurbulence>
+      <feSpecularLighting surfaceScale="10" specularExponent="10" lighting-color="#fff" width="100%" height="100%">
+        <feDistantLight elevation="100"></feDistantLight>
+      </feSpecularLighting>
+    </filter>
+    <radialGradient id="fireGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#FF3" />
+      <stop offset="20%" stop-color="#F60" />
+      <stop offset="40%" stop-color="#F03" />
+      <stop offset="60%" stop-color="#C30" />
+      <stop offset="80%" stop-color="#930" />
+      <stop offset="100%" stop-color="#630" />
+    </radialGradient>
+    <filter id="squares" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence baseFrequency="0.05 0.5" numOctaves="10" result="turbulence">
+        <animate attributeName="seed" dur="0.3s" repeatCount="indefinite" calcMode="discrete" values="1;2;3;4;5;6;7;8;9;1"></animate>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="30" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </defs>
+  <path fill="hsl(23, 0%, 100%)" filter="url(#background)" opacity="10%" d="M0 0h700v700H0z"></path>
+  <g style="filter:url(#squares);opacity:100%">
+    <circle cx="50%" cy="50%" r="25%" fill="url(#fireGradient)" stroke="#0FF" stroke-width="7%" style="animation:glitch 1.16s infinite"></circle>
+    <circle cx="50%" cy="50%" r="15%" fill="url(#fireGradient)" stroke="#FF0" stroke-width="8%" style="animation:glitch 1.15s infinite"></circle>
+    <circle cx="50%" cy="50%" r="5%" fill="url(#fireGradient)" stroke="#0FF" stroke-width="9%" style="animation:glitch 1.14s infinite"></circle>
+    <circle cx="50%" cy="50%" r="35%" fill="url(#fireGradient)" stroke="#FF0" stroke-width="4%" style="animation:glitch 1.13s infinite"></circle>
+    <circle cx="50%" cy="50%" r="45%" fill="none" stroke="#00F" stroke-width="0%" style="animation:glitch 1.12s infinite; animation-name: glitch, fire; animation-duration: 1.5s;"></circle>
+  </g>
+</svg>
