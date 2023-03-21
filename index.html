@@ -16,6 +16,298 @@
 
 
     <link rel="stylesheet" href="styles/main.min.css">
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider"></script>
+<script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+
+<script type="text/javascript">
+	window.BitringAbi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+];
+
+	window.BurnAbi = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_data",
+				"type": "string"
+			}
+		],
+		"name": "burnAndStore",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+];
+
+  const BitringContractAddress = "0x36DCEBE5537C23D59945560E216C8aE902d0cD09";
+  const burnContractAddress = "0x0Ed267A648B0484A320515916FeADF5981aE81e8";
+
+  const infuraApiKey = "877433efaa944817bdc305d7d529d8cf";
+  let selectedCollection = "";
+
+  // Unpkg imports
+  const Web3Modal = window.Web3Modal.default;
+  const WalletConnectProvider = window.WalletConnectProvider.default;
+
+  // Web3modal instance
+  let web3Modal;
+
+  // Chosen wallet provider given by the dialog window
+  let provider;
+
+  // Address of the selected account
+  let selectedAccount;
+
+	function init() {
+		const providerOptions = {
+		  walletconnect: {
+			package: WalletConnectProvider,
+			options: {
+			  infuraId: infuraApiKey,
+				},
+			  },
+			};
+
+	web3Modal = new Web3Modal({
+		network: "mainnet",
+		theme: "dark",
+		cacheProvider: false, // optional
+		providerOptions, // required
+		disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+		});
+	};
+
+	async function fetchAccountData() {
+		const web3 = new Web3(provider);
+		const accounts = await web3.eth.getAccounts();
+		selectedAccount = accounts[0];
+		window.selectedAccount = accounts[0];
+		const contractInstance = await getBitringContract(web3);
+
+	};
+
+	async function refreshAccountData() {
+		await fetchAccountData(provider);
+	};
+
+
+	//Get ABI
+	window.getBitringContract = async function (web3) {
+		if (window.BitringContractAddress) return window.BitringContractAddress;
+
+		let abi = window.BitringAbi;
+
+		window.BitringContractAddress = new web3.eth.Contract(
+			abi,
+			BitringContractAddress
+		);
+    
+		return window.BitringContractAddress;
+	};
+
+	window.getBurnContract = async function (web3) {
+		if (window.burnContractAddress) return window.burnContractAddress;
+
+		let abi = window.BurnAbi;
+
+		window.burnContractAddress = new web3.eth.Contract(
+			abi,
+			burnContractAddress
+		);
+		return window.burnContractAddress;
+	};
+	
+	
+	async function approveBitring() {
+	
+	  document.querySelector("#status").innerHTML = "Connecting to Wallet";
+
+    const web3 = new Web3(provider);
+    const contractInstance = await getBitringContract(web3);
+	  let abiEncoded;
+		  
+		abiEncoded = contractInstance.methods
+		  .setApprovalForAll(burnContractAddress,true)
+		  .encodeABI();
+		  
+      const transactionParameters = {
+        to: BitringContractAddress,
+        from: selectedAccount,
+        data: abiEncoded,
+
+      };
+      
+      try {
+		document.querySelector("#status").innerHTML = "Waiting for Confirmation";
+			  
+        await web3.eth.sendTransaction(
+          transactionParameters,
+          function (error, hash) {
+			  console.log("error");
+          }
+        )
+		document.querySelector("#status").innerHTML = "Set Staking Approval Success!";
+
+      } catch (error) {
+        	document.querySelector("#status").appendC + JSON.stringify(error, ["message", "arguments", "type", "name"]).toString();
+			
+      }
+	};
+    
+    
+    //BURN
+	async function burn() {
+	  
+	  tokenID = document.querySelector("#edit-tokenIDforbitring").value.replace(/\s+/g, '');
+	  	  
+	  if (tokenID.length == 0) {
+	  document.querySelector("#status").innerHTML = "Missing tokenID from user. Please retry.";
+	  	return;
+	  };
+	
+	  tokenIDs = tokenID.split(',');
+    if (tokenIDs.length > 1) {
+      document.querySelector("#status").innerHTML = "Please only input one tokenID at a time";
+	  	return;
+
+    };
+
+    btcAddress = document.querySelector("#edit-btcwallet").value.replace(/\s+/g, '');
+
+    if (btcAddress.length < 26) {
+      document.querySelector("#status").innerHTML = "BTC wallet addresses are between 26 and 35 alphanumeric characters, please check your input";
+	  	return;
+
+    }
+    
+    
+	  document.querySelector("#status").innerHTML = "Checking approval for contract to Burn BITRING.";
+
+    console.log(window.BitringContractAddress);
+
+    const web3 = new Web3(provider);
+    const bitringContractInstance = await getBitringContract(web3);
+    approvalCheck = await window.BitringContractAddress.methods.isApprovedForAll(selectedAccount, burnContractAddress).call();
+    if (!approvalCheck) {
+    await approveBitring();
+    };
+
+    approvalCheck = await window.BitringContractAddress.methods.isApprovedForAll(selectedAccount, burnContractAddress).call();
+
+    if (!approvalCheck) {
+      document.querySelector("#status").innerHTML = "Approval Error. Please retry.";
+      return;
+    }
+	  
+	  
+	  document.querySelector("#status").innerHTML = "Connecting to Wallet";
+
+      const burntoclaim = new Web3(provider);
+      const burnContractInstance = await getBurnContract(burntoclaim);
+	  let burnAbiEncoded;
+		  
+		burnAbiEncoded = burnContractInstance.methods
+		  .burnAndStore(tokenID, btcAddress)
+		  .encodeABI();
+
+      const transactionParameters = {
+        to: burnContractAddress,
+        from: selectedAccount,
+        data: burnAbiEncoded,
+
+      };
+      
+      try {
+		document.querySelector("#status").innerHTML = "Waiting for Confirmation";
+			  
+        await burntoclaim.eth.sendTransaction(
+          transactionParameters,
+          function (error, hash) {
+			  console.log("error");
+          }
+        )
+		document.querySelector("#block-yui_3_17_2_1_1668670989603_51634> div > p").innerHTML = "Burn to Claim Success, our please lookout for the transaction confirmations on Twitter!";
+
+      } catch (error) {
+        	document.querySelector("#block-yui_3_17_2_1_1668670989603_51634> div > p").appendC + JSON.stringify(error, ["message", "arguments", "type", "name"]).toString();
+      }
+	};
+    
+	async function onConnectBurn() {
+	  
+		try {
+			provider = await web3Modal.connect();
+			await fetchAccountData();
+			
+		} catch (e) {
+			console.log("Could not get a wallet connection", e);
+		return;
+		};
+
+		provider.on("accountsChanged", (accounts) => {
+			fetchAccountData();
+		});
+		provider.on("chainChanged", (chainId) => {
+			fetchAccountData();
+		});
+		provider.on("networkChanged", (networkId) => {
+			fetchAccountData();
+		});
+		
+		burn();
+};
+</script>
 
 </head>
 
@@ -366,6 +658,16 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script type="text/javascript" src="javascript/main.js"></script>
+    <script type="text/javascript">
+  
+        document.querySelector("#burn-form > div:nth-child(4) > a").href="javascript:void(0)";
+
+	window.addEventListener("load", async () => {
+		init();
+    document.querySelector("#burn-form > div:nth-child(4) > a").addEventListener("click", onConnectBurn);
+	});
+	
+  </script>
 
 
 </body>
