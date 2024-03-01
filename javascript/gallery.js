@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (index > 1000) break; // Stop if we've reached 1000 images
 
             const img = document.createElement('img');
-            img.setAttribute('data-src', `images/bitring/pngsmall/${index}.png`);
+            img.setAttribute('data-src', `../images/bitring/pngsmall/${index}.png`);
             img.alt = `Loading BITRING #${index}`; // Descriptive alt tag for accessibility
             img.classList.add('svg-image'); // Ensure this class exists and has relevant styles
             gallery.appendChild(img);
@@ -176,7 +176,7 @@ function displaySVGs(metadataArray) {
 
         // Create the img element
         const imgElement = document.createElement('img');
-        imgElement.src = `images/bitring/pngsmall/${metadata.tokenId}.png`;
+        imgElement.src = `../images/bitring/pngsmall/${metadata.tokenId}.png`;
         imgElement.alt = `${metadata.name}`; // Descriptive alt tag for accessibility
         imgElement.className = 'svg-image'; // Apply styling
 
@@ -422,7 +422,7 @@ function displayItemByTokenId(tokenId) {
 
     if (item) {
         const imgElement = document.createElement('img');
-        imgElement.src = `images/bitring/pngsmall/${item.tokenId}.png`;
+        imgElement.src = `../images/bitring/pngsmall/${item.tokenId}.png`;
         imgElement.alt = `${item.name}`; // Descriptive alt tag for accessibility
         galleryContainer.appendChild(imgElement);
     } else {
