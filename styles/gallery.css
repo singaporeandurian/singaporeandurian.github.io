@@ -3199,16 +3199,18 @@ body {
 }
 
 .svg-gallery {
+    min-height: calc(100vh - 2rem); /* Ensures a minimum height but allows expansion based on content */
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); /* Adjust based on your preference and screen size */
-    gap: 10px; /* Spacing between images */
-    overflow-y: scroll; /* Enables vertical scrolling */
+    grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); /* Adjust based on your preference */
+    gap: 10px; /* Adjust spacing between images */
+    overflow-y: auto; /* Allows scrolling if content overflows */
 }
 
 .svg-image {
-    width: 100%; /* Makes the images responsive to the container's width */
-    height: 100%; /* Maintain aspect ratio */
-    display: block; /* Ensures images are correctly displayed as block-level elements */
+    width: 100%; /* Fill the width of the container */
+    height: auto; /* Adjust height automatically to maintain aspect ratio */
+    display: block; /* Block display to avoid inline gaps */
+    object-fit: cover; /* Cover the area of the container without stretching */
 }
 
 .loading-screen {
