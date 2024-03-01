@@ -2185,7 +2185,7 @@ details.collapse summary::-webkit-details-marker {
 }
 
 .h-\[calc\(100\%-theme\(spacing\.8\)\)\] {
-    height: calc(100vh - 2rem)
+    max-height: calc(100vh - 2rem)
     
 }
 
