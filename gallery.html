@@ -1,0 +1,224 @@
+<html lang="en">
+    <head>
+        <meta charSet="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <script type="text/javascript" src="./javascript/gallery.js"></script>
+        <title>BITRING</title>
+        <meta name="description" content="BITRING GALLERY BROWSER"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Geologica:wght@100..900&family=Honk&display=swap" rel="stylesheet">
+    </head>
+    <body class="h-[100dvh]">
+        <div class="nm-container App flex flex-col justify-center items-center h-full flex-grow">
+            <div class="w-full h-full lg:w-5/6 h-[100vh] lg:h-[85vh]">
+                <div class="nm-panel nm-panel-gutter flex justify-between items-center px-2 lg:hidden">
+                    <div class="flex text-left text-2xl lg:text-xl justify-between w-full items-center">
+                        <div><a href="https://bitring.network">BITRING</a></div>
+                        <div class="text-right lg:hidden">
+                            <label for="right-drawer" class="drawer-button"><a href="https://bitring.network">&lt;BACK&gt;</a></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="drawer lg:drawer-open drawer-mobile h-[calc(100%-theme(spacing.8)-var(--panel-gutter))] lg:h-full">
+                    <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
+                    <div class="nm-panel drawer-content lg:!z-index-unset">
+                        <div class="relative h-[calc(100%-theme(spacing.8))] overflow-hidden pr-1">
+                            <div class="fixed inset-0 z-50 flex justify-center items-center">
+                                <div class="nm-panel nm-box-shadow p-1">
+                                    <div class="nm-border p-2 overflow-auto max-h-max">
+                                        <div class="flex flex-col gap-2 md:flex-row md:items-stretch md:items-start mb-2">
+                                            <div class="">
+                                                <canvas class="nm-canvas w-[75vw] h-[75vw] md:w-[300px] lg:w-[350px] md:h-[300px] lg:h-[350px]" width="300" height="300">
+                                                </canvas>
+                                            </div>
+                                            <div class="w-full  text-xl leading-[1.15rem] flex flex-col gap-1 justify-between">
+                                                <div>
+                                                    <div class="mb-4 w-[75vw] md:w-[300px] lg:w-[350px]">BITRING #1 / Inscription 66666 <br>Rarity - 1 / 1000</div>
+                                                    <div class="mb-4"><h3>Attribute List</h3><ul style="list-style: none; padding: 0px;">
+                                                    </ul>
+                                                </div>
+                                                <div id="importantInfo"><br><br><br></div>
+                                            </div>
+                                            <div class="justify-self-end flex justify-between">
+                                                <div>
+
+                                                </div>
+                                                <div>
+                                                    <!-- <button class="link link-hover uppercase">&lt;NEXT&gt;</button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                    <div class="grow flex justify-between leading-3">
+                                        <a class="link link-hover uppercase" href="https://ordinals.com/inscription/008610b01a62fc78c43cc31c6e31f6e2606b13b1d2bc537379eaf47205a1c7ffi0" target="_blank" rel="noreferrer">&lt;INSCRIPTION LINK&gt;</a>
+                                        <button id="esc" class="link link-hover uppercase">&lt;ESC&gt;</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                            <div class="nm-panel flex flex-row justify-between items-center text-xl py-1 px-2">
+                                <div><label for="my-drawer" class="drawer-button lg:hidden">&lt;FILTERS&gt;</label></div>
+                                <div class="hidden lg:block"><a href="https://bitring.network">BITRING</a></div>
+                                <div class="text-right">
+                                    <span class="mr-2">ZOOM</span>
+                                    <div class="inline-block">
+                                        <button id="zoomOut" class="btn btn-ghost btn-square btn-xs text-xl rounded-none nm-selected-color">▲</button>
+                                        <button id="zoomIn" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">
+                                            <span class="rotate-180 -translate-y-[2px]">▲</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-[calc(100%-theme(spacing.8))] flex">
+                                <div class="svg-gallery" style="width: 100%; overflow: auto;">
+                                    <div id="loading-screen" class="loading-screen fade-out">
+                                        <img src="./images/bitringlogosmall.jpg" alt="Loading..." class="loading-logo">
+                                    </div>
+                                    <!-- SVG images will be inserted here by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nm-panel flex items-center text-xl h-[theme(spacing.8)]">
+                            <div class="flex-grow flex justify-between items-center px-2">
+                                <div class="text-left">
+                                    <div class="block lg:hidden">BITRING</div>
+                                </div>
+                                <div class="text-right pr-3">
+                                    <div class="gap-8 hidden lg:flex uppercase items-center">
+                                        <a href="https://bitring.network">HOME</a>
+                                        <!-- <a class="link link-hover uppercase hover:no-underline " href="https://twitter.com/bitring_nft" target="_blank" rel="noreferrer">TWITTER</a> -->
+                                    </div>
+                                    <div class="block lg:hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drawer-side h-full text-xl">
+                        <label for="my-drawer" class="drawer-overlay"></label>
+                        <div class="nm-container h-full flex">
+                            <div class="w-80 max-w-[80vw] h-full flex flex-col text-base-content text-left overflow-auto">
+                                <div class="nm-panel nm-panel-gutter px-2 py-1 pr-3 !pr-1">
+                                    <div class="text-xl">
+                                        <form class="flex justify-between items-center" id="tokenIdForm">
+                                            <div>
+                                                <span class="mr-3">
+                                                    <span class="uppercase text-xl">Lookup ID / BITRING No.</span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <input type="number" id="tokenIdInput" class="nm-input leading-tight px-1 w-[5rem] focus:outline-none h-min " placeholder="e.g, 1" pattern="\d*" value=""/>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="nm-panel nm-panel-gutter px-2 py-1 pr-3">
+                                    <span class="uppercase text-xl">Sort By &gt;</span>
+                                    <div class="flex justify-between items-center">
+                                        <span class="mr-2">Rarity</span>
+                                        <div class="inline-block">
+                                            <button id="sortRarityAsc" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">▲</button>
+                                            <button id="sortRarityDesc" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">
+                                                <span class="rotate-180 -translate-y-[2px]">▲</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="mr-2">Inscription No.</span>
+                                        <div class="inline-block">
+                                            <button id="sortInscriptionAsc" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">▲</button>
+                                            <button id="sortInscriptionDesc" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">
+                                                <span class="rotate-180 -translate-y-[2px]">▲</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="mr-2">Token ID</span>
+                                        <div class="inline-block">
+                                            <button id="sortTokenAsc" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">▲</button>
+                                            <button id="sortTokenDesc" class="btn btn-ghost btn-square btn-xs text-xl rounded-none ">
+                                                <span class="rotate-180 -translate-y-[2px]">▲</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nm-panel nm-panel-gutter px-2 py-1 pr-3 ">
+                                    <div class="flex justify-between">
+                                        <span class="uppercase">Filters (
+                                        <span id="filterCount">0</span>
+                                        ) -
+                                        <span id="filteredTotal">1000</span>
+                                        /
+                                        1000</span>
+                                        <button id="clearFilter">Clear »</button>
+                                    </div>
+                                    <ul class="flex flex-nowrap overflow-x-auto pt-2 pb-3">
+                                        <span class="pl-1">No Traits Selected</span>
+                                    </ul>
+                                </div>
+                                <div class="nm-panel nm-panel-gutter px-2 py-1 pr-3 flex-grow !pr-1 overflow-hidden">
+                                    <div class="overflow-y-scroll pr-2 h-full">
+                                        <div class="uppercase flex justify-between">
+                                            <span>Attributes</span>
+                                        </div>
+                                        <div class="nm-tree" id="attributesContainer">
+                                            <!-- JavaScript will populate this container with attribute filters -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sticky bottom-0">
+                                    <div class="nm-panel flex items-center text-xl h-[theme(spacing.8)]">
+                                        <div class="flex-grow flex justify-between items-center px-2">
+                                            <div class="text-left hidden lg:block"><a href="https://bitring.network">BITRING</a></div>
+                                            <div class="text-left lg:text-right"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-[15px] nm-container lg:bg-[--primary]"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="drawer drawer-end lg:hidden">
+                    <input id="right-drawer" type="checkbox" class="drawer-toggle"/>
+                    <div class="drawer-side h-full text-xl">
+                        <label for="right-drawer" class="drawer-overlay"></label>
+                        <div class="nm-container h-full flex">
+                            <div class="w-[15px] nm-container lg:bg-[--primary]"></div>
+                            <div class="h-full flex flex-col text-base-content text-left overflow-auto" style="width:min(80rem, 80vw)">
+                                <div class="nm-panel nm-panel-gutter flex justify-between px-2 h-[theme(spacing.8)]">
+                                    <div class="self-center"></div>
+                                    <div class="self-center text-right">
+                                        <label for="right-drawer" class="cursor-pointer">X</label>
+                                    </div>
+                                </div>
+                                <div class="nm-panel px-2 py-1 h-full">
+                                    <button class="link link-hover uppercase ">[ CONNECT WALLET ]</button>
+                                    <div>
+                                        <a href="/gallery">&lt;
+                                        BITRING GALLERY
+                                        &gt;</a>
+                                    </div>
+                                    <div>
+                                        <a href="https://bitring.network">&lt;
+                                        Auction Results
+                                        &gt;</a>
+                                    </div>
+                                    <div>
+                                        <a class="link link-hover uppercase hover:no-underline " href="https://twitter.com/bitring_nft" target="_blank" rel="noreferrer">TWITTER</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <link rel="stylesheet" href="./styles/gallery.css" crossorigin="" data-precedence="next"/>
+
+    </footer>
+</html>
