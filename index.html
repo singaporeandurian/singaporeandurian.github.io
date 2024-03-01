@@ -665,12 +665,14 @@
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script type="text/javascript" src="javascript/main.js"></script>
     <script type="text/javascript">
-  
-        document.querySelector("#burn-form > div:nth-child(4) > a").href="javascript:void(0)";
+	document.addEventListener('DOMContentLoaded', function() {
+
+	document.querySelector("#burn-form > div:nth-child(4) > a").href="javascript:void(0)";
 
 	window.addEventListener("load", async () => {
 		init();
     document.querySelector("#burn-form > div:nth-child(4) > a").addEventListener("click", onConnectBurn);
+	});
 	});
 	
   </script>
