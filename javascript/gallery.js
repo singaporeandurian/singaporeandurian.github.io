@@ -155,7 +155,7 @@ drawerCheckbox.addEventListener('click', toggleDrawer);
 let filteredMetadata = []; // This stores metadata after filtering
 
 async function loadMetadata() {
-    let response = await fetch('images/bitring/metadata/master/master.json'); 
+    let response = await fetch('../images/bitring/metadata/master/master.json'); 
     let metadataArray = await response.json();
     filteredMetadata = metadataArray; // Assign metadata to filteredMetadata
 
