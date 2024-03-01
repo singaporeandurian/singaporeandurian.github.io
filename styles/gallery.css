@@ -3195,7 +3195,6 @@ body {
 
     .lg\:\!z-index-unset {
         z-index: unset!important;
-        overflow-y:scroll;
     }
 }
 
