@@ -382,7 +382,7 @@ function populateTraits(traits) {
         traitElement.innerHTML = `
             <div>
                 <div class="collapse rounded-none">
-                    <input type="checkbox" class="min-h-0"> <!-- This might be adjusted if needed -->
+                    <input type="checkbox" class="min-h-0">
                     <div class="collapse-title p-0 min-h-0">
                         <span class="whitespace-nowrap mr-2">${trait} (${Object.keys(values).length}) </span>
                     </div>
