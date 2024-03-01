@@ -515,7 +515,7 @@ function updatePopupWithMetadata(metadata) {
 
     // Update the popup content based on the metadata
     const popup = document.querySelector('.nm-panel.nm-box-shadow');
-    popup.querySelector('.nm-canvas').style.backgroundImage = `url('images/bitring/artwork/${metadata.tokenId}.svg')`;
+    popup.querySelector('.nm-canvas').style.backgroundImage = `url('../images/bitring/artwork/${metadata.tokenId}.svg')`;
     popup.querySelector('.mb-4').innerHTML = `BITRING #${metadata.tokenId}`;
     popup.querySelector('h3 + ul').innerHTML = attributesHtml;
     popup.querySelector('.text-xl div:last-child').innerHTML = `Inscription ID - ${inscriptionId} bytes <br>Rarity Rank - ${rarityRank} / 1000 <br>`;
