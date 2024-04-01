@@ -26,6 +26,7 @@
 <script type="text/javascript">
 	window.BitringAbi = [
 	{
+        
 		"inputs": [
 			{
 				"internalType": "address",
@@ -67,6 +68,7 @@
 		"stateMutability": "view",
 		"type": "function"
 	},
+    {"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}
 ];
 
 	window.BurnAbi = [
@@ -93,7 +95,7 @@
   const BitringContractAddress = "0x36DCEBE5537C23D59945560E216C8aE902d0cD09";
   const burnContractAddress = "0x0Ed267A648B0484A320515916FeADF5981aE81e8";
 
-  const infuraApiKey = "877433efaa944817bdc305d7d529d8cf";
+  const infuraApiKey = "";
   let selectedCollection = "";
 
   // Unpkg imports
@@ -129,7 +131,15 @@
 	};
 
 	async function fetchAccountData() {
-		const web3 = new Web3(provider);
+        const web3 = new Web3(provider);
+        const chainId = await web3.eth.getChainId();
+        
+        if(chainId !== 1) {
+            // If not, alert the user to switch to Ethereum Mainnet
+            document.querySelector("#status").innerHTML = `You are currently on network ID ${chainId}, please switch to Ethereum Mainnet.`;
+        return; 
+        }
+
 		const accounts = await web3.eth.getAccounts();
 		selectedAccount = accounts[0];
 		window.selectedAccount = accounts[0];
@@ -201,7 +211,6 @@
 
       } catch (error) {
         	document.querySelector("#status").appendC + JSON.stringify(error, ["message", "arguments", "type", "name"]).toString();
-			
       }
 	};
     
@@ -230,14 +239,20 @@
 	  	return;
 
     }
-    
-    
-	  document.querySelector("#status").innerHTML = "Checking approval for contract to Burn BITRING.";
+	document.querySelector("#status").innerHTML = "Checking approval for contract to Burn BITRING.";
 
     console.log(window.BitringContractAddress);
 
     const web3 = new Web3(provider);
     const bitringContractInstance = await getBitringContract(web3);
+    const ownerAddress = await bitringContractInstance.methods.ownerOf(tokenID).call();
+
+
+    if (ownerAddress.toLowerCase() !== selectedAccount.toLowerCase()) {
+        document.querySelector("#status").innerHTML = `Ownership verification failed. Please ensure you've connected the right account. Connected Account ends with: ${selectedAccount.slice(-4)}, but Owner of Token ID ends with: ${ownerAddress.slice(-4)}. To change your connected account in MetaMask, click on the MetaMask extension icon, select the account you wish to use, and then refresh this page.`;
+            return; // Exit the function early as the ownership check failed
+        }
+
     approvalCheck = await window.BitringContractAddress.methods.isApprovedForAll(selectedAccount, burnContractAddress).call();
     if (!approvalCheck) {
     await approveBitring();
@@ -249,7 +264,6 @@
       document.querySelector("#status").innerHTML = "Approval Error. Please retry.";
       return;
     }
-	  
 	  
 	  document.querySelector("#status").innerHTML = "Connecting to Wallet";
 
@@ -267,46 +281,63 @@
         data: burnAbiEncoded,
 
       };
-      
+      // Attempting the transaction
       try {
-		document.querySelector("#status").innerHTML = "Waiting for Confirmation";
-			  
-        await burntoclaim.eth.sendTransaction(
-          transactionParameters,
-          function (error, hash) {
-			  console.log("error");
-          }
-        )
-		document.querySelector("#block-yui_3_17_2_1_1668670989603_51634> div > p").innerHTML = "Burn to Claim Success, our please lookout for the transaction confirmations on Twitter!";
+        document.querySelector("#status").innerHTML = "Waiting for Confirmation";
 
-      } catch (error) {
-        	document.querySelector("#block-yui_3_17_2_1_1668670989603_51634> div > p").appendC + JSON.stringify(error, ["message", "arguments", "type", "name"]).toString();
-      }
-	};
-    
-	async function onConnectBurn() {
-	  
-		try {
-			provider = await web3Modal.connect();
-			await fetchAccountData();
-			
-		} catch (e) {
-			console.log("Could not get a wallet connection", e);
-		return;
-		};
-
-		provider.on("accountsChanged", (accounts) => {
-			fetchAccountData();
-		});
-		provider.on("chainChanged", (chainId) => {
-			fetchAccountData();
-		});
-		provider.on("networkChanged", (networkId) => {
-			fetchAccountData();
-		});
-		
-		burn();
+        // Sending the transaction
+        await burntoclaim.eth.sendTransaction(transactionParameters, function (error, hash) {
+            if (error) {
+                console.log("Transaction error:", error);
+            } else {
+                // Log the transaction hash
+                console.log("Transaction hash:", hash);
+                
+                // Update the status message with the claimHash (transaction hash)
+                document.querySelector("#status").innerHTML = `Burn to Claim Success, please lookout for the transaction confirmations on Twitter! Your transaction hash: ${hash}`;
+            }
+        });
+    } catch (error) {
+        // Handle errors, such as user rejecting the transaction
+        console.error("Transaction failed:", error);
+        document.querySelector("#status").innerHTML = "Transaction failed. Please try again.";
+    }
 };
+    
+    async function onConnectBurn() {
+    try {
+        provider = await web3Modal.connect();
+        await fetchAccountData(); // This now includes the network check
+        
+        // If the network is not Ethereum Mainnet, fetchAccountData() will handle showing the message,
+        // and the rest of onConnectBurn should not proceed.
+        const web3 = new Web3(provider);
+        const chainId = await web3.eth.getChainId();
+        if(chainId !== 1) {
+            return; // Exit if not Ethereum Mainnet
+        }
+        
+    } catch (e) {
+        console.log("Could not get a wallet connection", e);
+        document.querySelector("#status").innerHTML = "Could not get a wallet connection. Please try again.";
+        return;
+    }
+
+    // Event listeners for account or network changes
+    provider.on("accountsChanged", (accounts) => {
+        fetchAccountData();
+    });
+    provider.on("chainChanged", (chainId) => {
+        fetchAccountData();
+    });
+    provider.on("networkChanged", (networkId) => {
+        fetchAccountData();
+    });
+
+    // Continue with the burn function if the network is correct
+    burn();
+}
+
 </script>
 
 </head>
@@ -325,7 +356,7 @@
                         <ul id="menu-main-menu" class="menu">
                             <li id="menu-item-16"
                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16"><a
-                                    href="./gallery">GALLERY
+                                    href="./gallery.html">GALLERY
                                 </a></li>
                             <li id="menu-item-17"
                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17"><a
@@ -354,14 +385,14 @@
                         <ul id="menu-main-menu" class="menu">
                             <li id="menu-item-16"
                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16"><a
-                                    href="./gallery">GALLERY
+                                    href="#">BURN-TO-CLAIM
                                 </a></li>
                             <li id="menu-item-17"
                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17"><a
-                                    href="https://opensea.io/collection/bitring-btc">OPENSEA</a></li>
+                                    href="#">OPENSEA</a></li>
                             <li id="menu-item-19"
                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19"><a
-                                    href="https://magiceden.io/ordinals/marketplace/bitring">MAGIC EDEN
+                                    href="#">ORDINAL MARKET
                                 </a></li>
                         </ul>
                     </div>
@@ -510,16 +541,11 @@
                                                 </div>
                                                 <div>
                                                     <p>3. Double check, you may only burn-claim once per tokenID.</p>
-
-
-
                                                     <a href="#" class="button-89 button-primary">
                                                         Burn to Claim
                                                     </a>
                                                 </div>
-                                                <p id="status">LFG! P.S. we recommend using different receiving
-                                                    addresses for each Ordinal you claim, and recommend
-                                                    Ord wallet.</p>
+                                                <p style="color:lightgreen" id="status">Status messages will appear here.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -657,7 +683,8 @@
 
 
 
-
+    <img src="http://pixel.wp.com/g.gif?v=ext&amp;j=1%3A11.3.2&amp;blog=156665187&amp;post=2&amp;tz=-3&amp;srv=squad.agency&amp;host=squad.agency&amp;ref=&amp;fcp=3388&amp;rand=0.8951224542708125"
+        alt="" width="6" height="5" id="wpstats">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
