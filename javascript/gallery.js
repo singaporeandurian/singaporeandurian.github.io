@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (index > 1000) break; // Stop if we've reached 1000 images
 
             const img = document.createElement('img');
-            img.setAttribute('data-src', '../images/bitring/pngsmall/${index}.png`);
+            img.setAttribute('data-src', '../images/bitring/pngsmall/' + index + '.png');
             img.alt = `Loading BITRING #${index}`; // Descriptive alt tag for accessibility
             img.classList.add('svg-image'); // Ensure this class exists and has relevant styles
             gallery.appendChild(img);
