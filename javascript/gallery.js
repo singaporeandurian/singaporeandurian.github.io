@@ -79,21 +79,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // Event listener for the form submission
     document.getElementById('tokenIdForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting traditionally
-        const tokenIdInput = document.getElementById('tokenIdInput').value;
-        if (tokenIdInput.trim() === '') { // Check if input is empty or contains only whitespaces
-            displaySVGs(filteredMetadata); // Display all items if input is empty
-        } else {
-            const tokenId = parseInt(tokenIdInput, 10); // Convert input to an integer
-            if (!isNaN(tokenId)) { // Check if conversion was successful (input was a number)
-                displayItemByTokenId(tokenId); // Display item by tokenId
-            } else {
-                // Optionally handle the case where input is not a valid number
-                displaySVGs(filteredMetadata); // Or clear the gallery/display a message
+        event.preventDefault(); // Prevent traditional form submission
+
+        const searchInput = document.getElementById('searchInput').value.trim();
+
+        if (searchInput === '') { // If input is empty, display all items
+            displaySVGs(filteredMetadata);
+            return;
+        }
+
+        // Normalize input if necessary (e.g., remove '#' prefix)
+        const normalizedSearchInput = searchInput.startsWith('#') ? searchInput.slice(1) : searchInput;
+
+        // Attempt to parse as tokenId
+        const tokenId = parseInt(normalizedSearchInput, 10);
+        let foundItems = [];
+
+        if (!isNaN(tokenId)) {
+            // Search by tokenId
+            const itemByTokenId = filteredMetadata.find(metadata => metadata.tokenId === tokenId);
+            if (itemByTokenId) {
+                foundItems.push(itemByTokenId);
             }
-        }v
+        }
+
+        // Search by Inscription ID
+        const itemByInscriptionId = filteredMetadata.filter(metadata => {
+            const attr = metadata.attributes.find(attr => attr.trait_type === 'Inscription ID');
+            return attr && attr.value.toString() === normalizedSearchInput;
+        });
+
+        foundItems = foundItems.concat(itemByInscriptionId);
+
+        // Remove duplicates if the same item was found by both tokenId and inscriptionId
+        foundItems = foundItems.filter((item, index, self) =>
+            index === self.findIndex((t) => (
+                t.tokenId === item.tokenId
+            ))
+        );
+
+        if (foundItems.length > 0) {
+            displaySVGs(foundItems);
+        } else {
+            // Display a "not found" message
+            const galleryContainer = document.querySelector('.svg-gallery');
+            galleryContainer.innerHTML = '<p>Item not found. Please check the ID and try again.</p>';
+        }
     });
 
 // Function to toggle the drawer
@@ -155,7 +187,7 @@ drawerCheckbox.addEventListener('click', toggleDrawer);
 let filteredMetadata = []; // This stores metadata after filtering
 
 async function loadMetadata() {
-    let response = await fetch('images/bitring/metadata/master/master.json'); 
+    let response = await fetch('../images/bitring/metadata/master/master.json'); 
     let metadataArray = await response.json();
     filteredMetadata = metadataArray; // Assign metadata to filteredMetadata
 
@@ -168,6 +200,11 @@ async function loadMetadata() {
 function displaySVGs(metadataArray) {
     let galleryContainer = document.querySelector('.svg-gallery');
     galleryContainer.innerHTML = ''; // Clear existing content
+
+    if (metadataArray.length === 0) {
+        galleryContainer.innerHTML = '<p>No items found.</p>';
+        return;
+    }
 
     metadataArray.forEach(metadata => {
         // Create the container div for each image
@@ -185,11 +222,11 @@ function displaySVGs(metadataArray) {
 
         // Append the container to the gallery
         galleryContainer.appendChild(imageContainer);
-
-        attachEventListenersToGalleryImages(); // Attach click event listeners to images
-
     });
+
+    attachEventListenersToGalleryImages(); // Attach click event listeners to images
 }
+
 
 // Function to attach click event listeners to gallery images
 function attachEventListenersToGalleryImages() {
@@ -414,17 +451,25 @@ function populateTraits(traits) {
 }
 
 
-// Function to display a specific item by tokenId
+// Function to display a specific item by tokenId remains the same
 function displayItemByTokenId(tokenId) {
     const item = filteredMetadata.find(metadata => metadata.tokenId === tokenId);
     let galleryContainer = document.querySelector('.svg-gallery');
     galleryContainer.innerHTML = ''; // Clear existing content
 
     if (item) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'svg-image-container';
+
         const imgElement = document.createElement('img');
         imgElement.src = `images/bitring/pngsmall/${item.tokenId}.png`;
         imgElement.alt = `${item.name}`; // Descriptive alt tag for accessibility
-        galleryContainer.appendChild(imgElement);
+        imgElement.className = 'svg-image'; // Apply styling
+
+        imageContainer.appendChild(imgElement);
+        galleryContainer.appendChild(imageContainer);
+
+        attachEventListenersToGalleryImages(); // Attach click event listeners to images
     } else {
         // Optional: Display some message if item with tokenId is not found
         galleryContainer.innerHTML = '<p>Item not found.</p>';
