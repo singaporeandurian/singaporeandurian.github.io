@@ -213,7 +213,7 @@ function displaySVGs(metadataArray) {
 
         // Create the img element
         const imgElement = document.createElement('img');
-        imgElement.src = '../images/bitring/pngsmall/${metadata.tokenId}.png`;
+        imgElement.src = '../images/bitring/pngsmall/${metadata.tokenId}.png';
         imgElement.alt = `${metadata.name}`; // Descriptive alt tag for accessibility
         imgElement.className = 'svg-image'; // Apply styling
 
@@ -462,7 +462,7 @@ function displayItemByTokenId(tokenId) {
         imageContainer.className = 'svg-image-container';
 
         const imgElement = document.createElement('img');
-        imgElement.src = '../images/bitring/pngsmall/${item.tokenId}.png`;
+        imgElement.src = '../images/bitring/pngsmall/${item.tokenId}.png';
         imgElement.alt = `${item.name}`; // Descriptive alt tag for accessibility
         imgElement.className = 'svg-image'; // Apply styling
 
