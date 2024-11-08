@@ -213,7 +213,7 @@ function displaySVGs(metadataArray) {
 
         // Create the img element
         const imgElement = document.createElement('img');
-        imgElement.src = '../images/bitring/pngsmall/${metadata.tokenId}.png';
+        imgElement.src = '../images/bitring/pngsmall/' + metadata.tokenId+ '.png';
         imgElement.alt = `${metadata.name}`; // Descriptive alt tag for accessibility
         imgElement.className = 'svg-image'; // Apply styling
 
