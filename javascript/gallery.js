@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (index > 1000) break; // Stop if we've reached 1000 images
 
             const img = document.createElement('img');
-            img.setAttribute('data-src', `../images/bitring/pngsmall/${index}.png`);
+            img.setAttribute('data-src', `images/bitring/pngsmall/${index}.png`);
             img.alt = `Loading BITRING #${index}`; // Descriptive alt tag for accessibility
             img.classList.add('svg-image'); // Ensure this class exists and has relevant styles
             gallery.appendChild(img);
@@ -79,21 +79,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // Event listener for the form submission
     document.getElementById('tokenIdForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting traditionally
-        const tokenIdInput = document.getElementById('tokenIdInput').value;
-        if (tokenIdInput.trim() === '') { // Check if input is empty or contains only whitespaces
-            displaySVGs(filteredMetadata); // Display all items if input is empty
-        } else {
-            const tokenId = parseInt(tokenIdInput, 10); // Convert input to an integer
-            if (!isNaN(tokenId)) { // Check if conversion was successful (input was a number)
-                displayItemByTokenId(tokenId); // Display item by tokenId
-            } else {
-                // Optionally handle the case where input is not a valid number
-                displaySVGs(filteredMetadata); // Or clear the gallery/display a message
+        event.preventDefault(); // Prevent traditional form submission
+
+        const searchInput = document.getElementById('searchInput').value.trim();
+
+        if (searchInput === '') { // If input is empty, display all items
+            displaySVGs(filteredMetadata);
+            return;
+        }
+
+        // Normalize input if necessary (e.g., remove '#' prefix)
+        const normalizedSearchInput = searchInput.startsWith('#') ? searchInput.slice(1) : searchInput;
+
+        // Attempt to parse as tokenId
+        const tokenId = parseInt(normalizedSearchInput, 10);
+        let foundItems = [];
+
+        if (!isNaN(tokenId)) {
+            // Search by tokenId
+            const itemByTokenId = filteredMetadata.find(metadata => metadata.tokenId === tokenId);
+            if (itemByTokenId) {
+                foundItems.push(itemByTokenId);
             }
-        }v
+        }
+
+        // Search by Inscription ID
+        const itemByInscriptionId = filteredMetadata.filter(metadata => {
+            const attr = metadata.attributes.find(attr => attr.trait_type === 'Inscription ID');
+            return attr && attr.value.toString() === normalizedSearchInput;
+        });
+
+        foundItems = foundItems.concat(itemByInscriptionId);
+
+        // Remove duplicates if the same item was found by both tokenId and inscriptionId
+        foundItems = foundItems.filter((item, index, self) =>
+            index === self.findIndex((t) => (
+                t.tokenId === item.tokenId
+            ))
+        );
+
+        if (foundItems.length > 0) {
+            displaySVGs(foundItems);
+        } else {
+            // Display a "not found" message
+            const galleryContainer = document.querySelector('.svg-gallery');
+            galleryContainer.innerHTML = '<p>Item not found. Please check the ID and try again.</p>';
+        }
     });
 
 // Function to toggle the drawer
@@ -155,7 +187,7 @@ drawerCheckbox.addEventListener('click', toggleDrawer);
 let filteredMetadata = []; // This stores metadata after filtering
 
 async function loadMetadata() {
-    let response = await fetch('../images/bitring/metadata/master/master.json'); 
+    let response = await fetch('images/bitring/metadata/master/master.json'); 
     let metadataArray = await response.json();
     filteredMetadata = metadataArray; // Assign metadata to filteredMetadata
 
@@ -169,6 +201,11 @@ function displaySVGs(metadataArray) {
     let galleryContainer = document.querySelector('.svg-gallery');
     galleryContainer.innerHTML = ''; // Clear existing content
 
+    if (metadataArray.length === 0) {
+        galleryContainer.innerHTML = '<p>No items found.</p>';
+        return;
+    }
+
     metadataArray.forEach(metadata => {
         // Create the container div for each image
         const imageContainer = document.createElement('div');
@@ -176,7 +213,7 @@ function displaySVGs(metadataArray) {
 
         // Create the img element
         const imgElement = document.createElement('img');
-        imgElement.src = `../images/bitring/pngsmall/${metadata.tokenId}.png`;
+        imgElement.src = `images/bitring/pngsmall/${metadata.tokenId}.png`;
         imgElement.alt = `${metadata.name}`; // Descriptive alt tag for accessibility
         imgElement.className = 'svg-image'; // Apply styling
 
@@ -185,11 +222,11 @@ function displaySVGs(metadataArray) {
 
         // Append the container to the gallery
         galleryContainer.appendChild(imageContainer);
-
-        attachEventListenersToGalleryImages(); // Attach click event listeners to images
-
     });
+
+    attachEventListenersToGalleryImages(); // Attach click event listeners to images
 }
+
 
 // Function to attach click event listeners to gallery images
 function attachEventListenersToGalleryImages() {
@@ -382,7 +419,7 @@ function populateTraits(traits) {
         traitElement.innerHTML = `
             <div>
                 <div class="collapse rounded-none">
-                    <input type="checkbox" class="min-h-0">
+                    <input type="checkbox" class="min-h-0"> <!-- This might be adjusted if needed -->
                     <div class="collapse-title p-0 min-h-0">
                         <span class="whitespace-nowrap mr-2">${trait} (${Object.keys(values).length}) </span>
                     </div>
@@ -414,17 +451,25 @@ function populateTraits(traits) {
 }
 
 
-// Function to display a specific item by tokenId
+// Function to display a specific item by tokenId remains the same
 function displayItemByTokenId(tokenId) {
     const item = filteredMetadata.find(metadata => metadata.tokenId === tokenId);
     let galleryContainer = document.querySelector('.svg-gallery');
     galleryContainer.innerHTML = ''; // Clear existing content
 
     if (item) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'svg-image-container';
+
         const imgElement = document.createElement('img');
-        imgElement.src = `../images/bitring/pngsmall/${item.tokenId}.png`;
+        imgElement.src = `images/bitring/pngsmall/${item.tokenId}.png`;
         imgElement.alt = `${item.name}`; // Descriptive alt tag for accessibility
-        galleryContainer.appendChild(imgElement);
+        imgElement.className = 'svg-image'; // Apply styling
+
+        imageContainer.appendChild(imgElement);
+        galleryContainer.appendChild(imageContainer);
+
+        attachEventListenersToGalleryImages(); // Attach click event listeners to images
     } else {
         // Optional: Display some message if item with tokenId is not found
         galleryContainer.innerHTML = '<p>Item not found.</p>';
@@ -515,10 +560,10 @@ function updatePopupWithMetadata(metadata) {
 
     // Update the popup content based on the metadata
     const popup = document.querySelector('.nm-panel.nm-box-shadow');
-    popup.querySelector('.nm-canvas').style.backgroundImage = `url('../images/bitring/artwork/${metadata.tokenId}.svg')`;
+    popup.querySelector('.nm-canvas').style.backgroundImage = `url('images/bitring/artwork/${metadata.tokenId}.svg')`;
     popup.querySelector('.mb-4').innerHTML = `BITRING #${metadata.tokenId}`;
     popup.querySelector('h3 + ul').innerHTML = attributesHtml;
-    popup.querySelector('.text-xl div:last-child').innerHTML = `Inscription ID - #${inscriptionId}<br>Rarity Rank - ${rarityRank} / 1000 <br>`;
+    popup.querySelector('.text-xl div:last-child').innerHTML = `Inscription ID - ${inscriptionId} bytes <br>Rarity Rank - ${rarityRank} / 1000 <br>`;
     
     document.querySelector("body > div > div > div.drawer.lg\\:drawer-open.drawer-mobile.h-\\[calc\\(100\\%-theme\\(spacing\\.8\\)-var\\(--panel-gutter\\)\\)\\].lg\\:h-full > div.nm-panel.drawer-content.lg\\:\\!z-index-unset > div.relative.h-\\[calc\\(100\\%-theme\\(spacing\\.8\\)\\)\\].overflow-hidden.pr-1 > div.fixed.inset-0.z-50.flex.justify-center.items-center > div > div.nm-border.p-2.overflow-auto.max-h-max > div.grow.flex.justify-between.leading-3 > a").href = metadata.InscriptionURL;
 
