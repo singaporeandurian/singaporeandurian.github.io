@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('tokenIdForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent traditional form submission
 
-        const searchInput = document.getElementById('searchInput').value.trim();
+        const searchInput = document.getElementById('tokenIdInput').value.trim();
 
         if (searchInput === '') { // If input is empty, display all items
             displaySVGs(filteredMetadata);
