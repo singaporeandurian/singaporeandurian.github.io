@@ -563,7 +563,7 @@ function updatePopupWithMetadata(metadata) {
     popup.querySelector('.nm-canvas').style.backgroundImage = `url('../images/bitring/artwork/${metadata.tokenId}.svg')`;
     popup.querySelector('.mb-4').innerHTML = `BITRING #${metadata.tokenId}`;
     popup.querySelector('h3 + ul').innerHTML = attributesHtml;
-    popup.querySelector('.text-xl div:last-child').innerHTML = `Inscription ID - ${inscriptionId} bytes <br>Rarity Rank - ${rarityRank} / 1000 <br>`;
+    popup.querySelector('.text-xl div:last-child').innerHTML = `Inscription ID - ${inscriptionId}<br>Rarity Rank - ${rarityRank} / 1000 <br>`;
     
     document.querySelector("body > div > div > div.drawer.lg\\:drawer-open.drawer-mobile.h-\\[calc\\(100\\%-theme\\(spacing\\.8\\)-var\\(--panel-gutter\\)\\)\\].lg\\:h-full > div.nm-panel.drawer-content.lg\\:\\!z-index-unset > div.relative.h-\\[calc\\(100\\%-theme\\(spacing\\.8\\)\\)\\].overflow-hidden.pr-1 > div.fixed.inset-0.z-50.flex.justify-center.items-center > div > div.nm-border.p-2.overflow-auto.max-h-max > div.grow.flex.justify-between.leading-3 > a").href = metadata.InscriptionURL;
 
